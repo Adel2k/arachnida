@@ -3,7 +3,7 @@
 recursive=false
 depth=5
 path=./data/
-argc=$#
+forms="jpg,jpeg,png,bmp"
 
 while getopts ":r:l::p:" opt; do
 	case $opt in
@@ -29,6 +29,11 @@ if [ $# -eq 0 ]; then
 	echo -e "\e[31mNo URL entered\e[0m" >&2
 	exit 1
 fi
-	URL=$1
-	echo -e "\e[32mOpening $URL\e[0m"
-	curl "$URL"
+
+URL=$1
+echo -e "\e[32mDownloading $URL in $path\e[0m"
+if [ "$recursive" == "true" ]; then
+	wget -r -A "$forms" -l "$depth" -P "$path" "$URL"
+else
+	wget -A "$forms" -P "$path" "$URL"
+fi
