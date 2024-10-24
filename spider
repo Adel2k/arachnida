@@ -1,0 +1,34 @@
+#!/bin/bash
+
+recursive=false
+depth=5
+path=./data/
+argc=$#
+
+while getopts ":r:l::p:" opt; do
+	case $opt in
+		l )
+			depth=$OPTARG
+			;;
+		r )
+			recursive=true
+			;;
+		p )
+			path=$OPTARG
+			;;
+		\? )
+			echo -e "\e[31mInvalid option -$OPTARG\e[0m" >&2
+			exit 1
+			;;
+	esac
+done
+
+shift $((OPTIND - 1))
+
+if [ $# -eq 0 ]; then
+	echo -e "\e[31mNo URL entered\e[0m" >&2
+	exit 1
+fi
+	URL=$1
+	echo -e "\e[32mOpening $URL\e[0m"
+	curl "$URL"
